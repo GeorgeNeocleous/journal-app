@@ -8,7 +8,7 @@ const JournalEntriesDataContext = createContext([]);
 const JournalEntriesSetterContext = createContext(null);
 
 // Create custom hooks to access the context data
-export function useJournalEntriesData(){
+export function useJournalEntriesData(){ 
     console.log("Passing data around");
     
     // calls the useContext function with the variable name assigned data from the createConetxt function.
