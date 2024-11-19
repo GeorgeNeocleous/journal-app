@@ -22,16 +22,17 @@ export default function EntryForm({entryId}){
     let setJournalEntries = useJournalEntriesSetter();
 
     // If entry id is provided as a prop then it is used in the state, if it is not there, then an empty string is used ""
-    let [localId, setLocalId] = useState(entryId ? entryId.toString() : crypto.randomUUID());
+    // These are generated when the component loads
+    let [localId, setLocalId] = useState(entryId ? entryId.toString() : null);
     let [localType, setLocalType] = useState("journal");
     let [localName, setLocalName] = useState("Default Post Name");
     let [localContent, setLocalContent] = useState("Write your journal entry here.");
     let [localAuthor, setLocalAuthor] = useState("Super Cool Author - that's you!");
-    let [localLastEdited, setLocalLastEdited] = useState(Date.now());
     // By default each of these parameters will have an input field assigned to them
     // But Id and LastEdited should not take an input from the user
 
     // The function that handles the button event below to submit all the data to state
+    // These alter/ are generated when the form is submitted to thecontext system
     const handleSubmission = () => {
         setJournalEntries(currentJournalEntries => {
             let newEntry = {
@@ -40,7 +41,7 @@ export default function EntryForm({entryId}){
                 content: localContent,
                 name: localName,
                 type: localType,
-                id: localId
+                id: localId ? localId : crypto.randomUUID()
             }
             // Makes a copy of the array and then combines the new piece of data/the new object
             return [...currentJournalEntries, newEntry];
@@ -50,47 +51,88 @@ export default function EntryForm({entryId}){
 
 
     // input name needs to match the htmlfor in the label
+//     return(
+//         <>
+//             <label htmlFor="localName">Entry Title: </label>
+//             <input 
+//                 type="text" 
+//                 name="localName" 
+//                 value={localName} 
+//                 defaultValue={localName} 
+//                 onChange={(event) => setLocalName(event.target.value)}
+//             />
+
+//             <label htmlFor="localAuthor">Author: </label>
+//             <input 
+//                 type="text" 
+//                 name="localAuthor" 
+//                 value={localAuthor} 
+//                 defaultValue={localAuthor} 
+//                 onChange={(event) => setLocalAuthor(event.target.value)}
+//             />
+
+//             <label htmlFor="localContent">Content: </label>
+//             <input 
+//                 type="text" 
+//                 name="localContent" 
+//                 value={localContent} 
+//                 defaultValue={localContent} 
+//                 onChange={(event) => setLocalContent(event.target.value)}
+//             />
+
+//             <label htmlFor="localType">Entry Type: </label>
+//             <input 
+//                 type="text" 
+//                 name="localAuthor" 
+//                 value={localType} 
+//                 defaultValue={localType} 
+//                 onChange={(event) => setLocalType(event.target.value)}
+//             />
+//             <button onClick={handleSubmission}>
+//                 Submit new entry
+//             </button>
+//         </>
+//     )
+
+// }
     return(
         <>
-            <label htmlFor="localName">Entry Title: </label>
+            <label htmlFor="localName">Entry Title:</label>
             <input 
                 type="text" 
                 name="localName" 
                 value={localName} 
-                defaultValue={localName} 
                 onChange={(event) => setLocalName(event.target.value)}
             />
 
-            <label htmlFor="localAuthor">Author: </label>
+            <label htmlFor="localAuthor">Author:</label>
             <input 
                 type="text" 
                 name="localAuthor" 
                 value={localAuthor} 
-                defaultValue={localAuthor} 
                 onChange={(event) => setLocalAuthor(event.target.value)}
             />
+            
 
-            <label htmlFor="localContent">Content: </label>
+            <label htmlFor="localContent">Entry Content:</label>
             <input 
                 type="text" 
                 name="localContent" 
                 value={localContent} 
-                defaultValue={localContent} 
                 onChange={(event) => setLocalContent(event.target.value)}
             />
 
-            <label htmlFor="localType">Entry Type: </label>
+            <label htmlFor="localType">Entry Type:</label>
             <input 
                 type="text" 
-                name="localAuthor" 
+                name="localType" 
                 value={localType} 
-                defaultValue={localType} 
                 onChange={(event) => setLocalType(event.target.value)}
             />
+
             <button onClick={handleSubmission}>
                 Submit new entry
             </button>
         </>
-    )
-
+    );
 }
