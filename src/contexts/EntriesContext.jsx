@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
 
 // Create the context
@@ -31,6 +31,10 @@ export default function JournalEntriesProvider(props){
     // The data from the provider is stored within the state, then the context provider is used to share that state
     let [journalEntries, setJournalEntries] = useState([]);
 
+    useEffect(() => {
+        console.log(journalEntries);
+        
+    }, [journalEntries]); 
     // props.children is whatever the rest of the app is other than the wrapper
     return(
 
