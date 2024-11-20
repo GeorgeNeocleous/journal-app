@@ -8,7 +8,7 @@ export default function HomePage() {
             {/* New post form:  */}
             <EntryForm />
             {/* Latest X amount of posts: */}
-            <LatestXPosts limit={3}/>
+            <LatestXPosts limit={3} />
         </>
     );
 }

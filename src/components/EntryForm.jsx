@@ -12,7 +12,7 @@
 </JournalEntryContainer>
 */
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useJournalEntriesData, useJournalEntriesSetter } from "../contexts/EntriesContext";
 
 
@@ -31,23 +31,64 @@ export default function EntryForm({entryId}){
     // By default each of these parameters will have an input field assigned to them
     // But Id and LastEdited should not take an input from the user
 
+
+    useEffect(() => {
+        if (localId){
+            // checks each object in journalEntriesData, if the entry.id is == to localId then the specific post variable is set to this object
+            let specificPost = journalEntriesData.find((entry) => entry.id == localId);
+
+            setLocalAuthor(specificPost.author);
+            setLocalContent(specificPost.content);
+            setLocalName(specificPost.name);
+            setLocalType(specificPost.type);
+        }
+
+    }, [localId]);
+
     // The function that handles the button event below to submit all the data to state
     // These alter/ are generated when the form is submitted to thecontext system
     const handleSubmission = () => {
-        setJournalEntries(currentJournalEntries => {
-            let newEntry = {
-                lastEdited: Date.now(),
-                author: localAuthor,
-                content: localContent,
-                name: localName,
-                type: localType,
-                id: localId ? localId : crypto.randomUUID()
-            }
-            // Makes a copy of the array and then combines the new piece of data/the new object
-            return [...currentJournalEntries, newEntry];
+            setJournalEntries(currentJournalEntries => {
 
-        })
+
+                if (localId){
+                // If ID exists, we are EDITING
+                console.log("Searching existing data for ID of: " + localId);
+                let tempEntriesCopy = [...currentJournalEntries];
+
+                tempEntriesCopy.forEach((entry, index) => {
+                    if (entry.id == localId){
+                        tempEntriesCopy[index] = {
+                            lastEdited: Date.now(),
+                            author: localAuthor,
+                            content: localContent,
+                            name: localName,
+                            type: localType,
+                            id: localId ? localId : crypto.randomUUID()
+                        }
+                    }
+                });
+                return tempEntriesCopy;
+
+                // Makes a copy of the array and then combines the new piece of data/the new object
+
+            } else {        
+                let newEntry = {
+                    lastEdited: Date.now(),
+                    author: localAuthor,
+                    content: localContent,
+                    name: localName,
+                    type: localType,
+                    id: localId ? localId : crypto.randomUUID()
+                }
+                return [...currentJournalEntries, newEntry];
+            }
+
+        });
     }
+
+
+    
 
 
     // input name needs to match the htmlfor in the label

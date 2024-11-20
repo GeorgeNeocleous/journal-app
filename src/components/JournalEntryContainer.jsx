@@ -21,7 +21,9 @@ export default function JournalEntryContainer({entryId}){
         let currentEntry = journalEntriesData.find((entry) => entry.id == entryId);
         setCurrentJournalEntry(currentEntry);
         
-    }, []);
+    }, [journalEntriesData]);
+    // There was a problem where editing the post wasnt being reflected once it was said to finish editing
+    // The useEffect function needed to depend on journalEntriesData so that it would keep its data up to date
 
     if (isEditing){
         return  <>
