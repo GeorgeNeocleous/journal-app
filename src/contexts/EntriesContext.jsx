@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import { useLocalStorage } from "react-use";
 
 
 // Create the context
@@ -32,10 +33,21 @@ export default function JournalEntriesProvider(props){
     let [journalEntries, setJournalEntries] = useState([]);
 
     useEffect(() => {
-        console.log(journalEntries);
-        
+        // Read from local storage and apply that to state
+        setJournalEntries(journalEntriesLocalStorage);
+    }, []);
+
+    // If the key doesnt exist then it will set an empty array otherwise it will set
+    const [journalEntriesLocalStorage, setJournalEntriesLocalStorage] = useLocalStorage("supercooljournalapp-data", []);
+
+    useEffect(() => {
+        // console.log(journalEntries);
+        setJournalEntriesLocalStorage(journalEntries);
+        // Write data into local storage
     }, [journalEntries]); 
+    
     // props.children is whatever the rest of the app is other than the wrapper
+
     return(
 
         <JournalEntriesDataContext.Provider value={journalEntries}>
